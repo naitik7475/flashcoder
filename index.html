@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OA Coder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app-container">
+    <div id="response-overlay">
+      <div id="response-container">
+        <div id="response-controls">
+          <button id="done-btn" class="control-button">Close</button>
+          <button id="process-btn" class="control-button primary">Process</button>
+        </div>
+        <div id="response-box"></div>
+      </div>
+    </div>
+
+    <div id="status-message" class="status-message">
+      <span id="status-icon"></span>
+      <span id="status-text"></span>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>
