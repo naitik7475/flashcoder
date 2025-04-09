@@ -46,8 +46,8 @@ async function processScreenshots(screenshots, mainWindow) {
       contents: [{ role: "user", parts }],
       generationConfig: {
         maxOutputTokens: 8192,
-        temperature: 0.7,
-        topP: 0.8,
+        temperature: 1,
+        topP: 0.95,
         topK: 40
       }
     });
