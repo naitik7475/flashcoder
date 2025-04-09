@@ -113,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `;
       showOverlay();
-      showStatus(error, 'error');
       isProcessing = false;
     });
 
