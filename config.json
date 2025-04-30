@@ -1,0 +1,19 @@
+{
+  "apiKey": "YOUR_API_KEY",
+  "model": "gemini-2.0-flash",
+  "currentPromptIndex": 0,
+  "prompts": [
+    {
+      "name": "Solve",
+      "content": "Can you solve the question for me (there maybe multiple images and if there are multiple images there are two possibilities either they are multiple screenshots of different question or multiple screenshots of the same question, use this to organise the questions and provide an output) and give the final answer/code? Please provide an explanation also. (It may or may not be a coding question)"
+    },
+    {
+      "name": "Debug",
+      "content": "analyse the question, written code and the error from the image or images and suggest solutions for the error"
+    },
+    {
+      "name": "Aptitude",
+      "content": "Solve the questions in the image or images"
+    }
+  ]
+}

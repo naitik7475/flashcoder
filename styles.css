@@ -1,0 +1,340 @@
+:root {
+  /* --bg-overlay: rgba(0, 0, 0, 0.4); /* Original overlay color */
+  --bg-response: rgba(25, 25, 25, 0.65);
+  --bg-code: rgba(40, 40, 40, 0.65);
+  --bg-inline-code: rgba(60, 60, 60, 0.65);
+  --text-primary: rgba(255, 255, 255, 0.85);
+  --text-code: rgba(240, 240, 240, 0.9);
+  --error-color: rgba(255, 68, 68, 0.9);
+  --error-bg: rgba(255, 68, 68, 0.08);
+  --error-border: rgba(255, 68, 68, 0.3);
+  --accent-color: #4d9ff9;
+  --success-color: #37ab52;
+  --warning-color: #fd7e14;
+  --border-radius: 8px;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  background: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+#app-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#response-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s;
+  z-index: 9998;
+  backdrop-filter: none;
+  pointer-events: none; /* Always ignore mouse events */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#response-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none; /* CHANGED: Keep ignoring mouse events even when visible */
+}
+
+#response-container {
+  position: relative;
+  width: 80%;
+  max-width: 800px;
+  max-height: 95vh; /* Increased from 90vh to 95vh */
+  display: flex;
+  flex-direction: column;
+  pointer-events: none; /* Ensure container itself doesn't block */
+}
+
+#response-controls {
+  /* display: flex; /* Original display */
+  /* justify-content: flex-end; /* Original style */
+  /* margin-bottom: 8px; /* Original style */
+  display: none; /* CHANGE: Hide the control buttons container */
+}
+
+.control-button {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  margin-left: 8px;
+  cursor: default !important;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+
+.control-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  cursor: default !important;
+}
+
+.control-button.primary {
+  background: var(--accent-color);
+}
+
+.control-button.primary:hover {
+  background: rgba(77, 159, 249, 0.8);
+  cursor: default !important;
+}
+
+#response-box {
+  width: 100%;
+  height: 90vh; /* Added explicit height instead of just max-height */
+  max-height: 90vh; /* Increased from 85vh to 90vh */
+  overflow-y: auto;
+  background: var(--bg-response);
+  color: var(--text-primary);
+  padding: 16px;
+  box-sizing: border-box;
+  font-size: 15px;
+  line-height: 1.5;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(0, 0, 0, 0.1);
+  pointer-events: auto; /* Allow interaction with the response box */
+  border: none;
+  cursor: default !important;
+}
+
+/* Scrollbar styles */
+#response-box::-webkit-scrollbar {
+  width: 6px;
+}
+
+#response-box::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+#response-box::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+#response-box::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Code block styles */
+pre {
+  background: var(--bg-code);
+  color: var(--text-code);
+  padding: 12px;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: auto;
+  margin: 0.8em 0;
+  border: none;
+  max-width: 100%;
+  position: relative;
+  cursor: default !important;
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+  font-family: 'Fira Code', 'JetBrains Mono', Consolas, 'Courier New', monospace;
+  cursor: default !important;
+}
+
+.copy-button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: var(--text-primary);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: default !important;
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: none;
+}
+
+pre:hover .copy-button {
+  opacity: 1;
+  cursor: default !important;
+}
+
+.copy-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  cursor: default !important;
+}
+
+code {
+  font-family: 'Fira Code', 'JetBrains Mono', Consolas, 'Courier New', monospace;
+  background: var(--bg-inline-code);
+  color: var(--text-code);
+  padding: 2px 4px;
+  border-radius: 3px;
+  cursor: default !important;
+}
+
+/* Text styles */
+#response-box p {
+  margin: 0 0 12px 0;
+  line-height: 1.6;
+  cursor: default !important;
+}
+
+#response-box p:last-child {
+  margin-bottom: 0;
+}
+
+/* Status message styles */
+.status-message {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(40, 40, 40, 0.8);
+  color: white;
+  font-size: 14px;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-message.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.status-message.error {
+  background: var(--error-color);
+}
+
+.status-message.warning {
+  background: var(--warning-color);
+}
+
+.status-message.success {
+  background: var(--success-color);
+}
+
+.error-message {
+  color: var(--error-color);
+  background: var(--error-bg);
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 3px solid var(--error-border);
+  margin: 8px 0;
+  cursor: default !important;
+}
+
+.keyboard-shortcut {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+  font-size: 90%;
+  margin: 0 2px;
+  cursor: default !important;
+}
+
+.shortcuts-info {
+  margin-top: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  cursor: default !important;
+}
+
+.shortcuts-info h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  cursor: default !important;
+}
+
+.shortcuts-info ul {
+  margin: 0;
+  padding-left: 20px;
+  cursor: default !important;
+}
+
+.shortcuts-info li {
+  margin-bottom: 4px;
+  cursor: default !important;
+}
+
+.loading-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Animation for flashing notification */
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.flash {
+  animation: flash 1s ease-in-out;
+}
+
+/* Global cursor override to prevent cursor changes */
+* {
+  cursor: default !important;
+}
+
+a, button, input, textarea, select,
+#response-box::selection,
+pre::selection,
+code::selection,
+#response-box *::selection {
+  cursor: default !important;
+}
+
+/* Ensure text selection doesn't change cursor */
+::selection {
+  cursor: default !important;
+}
